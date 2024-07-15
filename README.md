@@ -18,10 +18,11 @@ Activezi API-urile:
 
 Deschizi CMD-ul si accesezi path-ul folderului (de ex: C:\Users\Mihnea\Desktop\EduQuestia)
 
-mkdir lectii
-mkdir quizzes
-npm install @google-cloud/vertexai@latest express cors multer
-gcloud auth application-default login
+Apoi scrie in CMD:
+ - mkdir lectii
+ - mkdir quizzes
+ - npm install @google-cloud/vertexai@latest express cors multer
+ - gcloud auth application-default login
 
 Te loghezi cu contul de Google pe care ai si contul de Google Cloud
 La ce sa ai grija:
@@ -37,7 +38,7 @@ Asa ar trebui sa arate folderul "EduQuestia"
 
 ![image](https://github.com/user-attachments/assets/994f864f-b844-4010-a394-2f32324259bd)
 
-Apoi in CMD scrie: node server.js
+Apoi scrie in CMD: node server.js
 
 ![image](https://github.com/user-attachments/assets/53dcbc7f-511a-4932-b68e-4f64b2520ce9)
 
