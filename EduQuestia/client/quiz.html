@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuestia | Quiz</title>
+    <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="logo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #0a0a3d;
+            position: relative;
+        }
+
+        .question-container {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .option-button {
+            margin: 10px;
+            padding: 14.4px 30px;
+            font-size: 19.2px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            flex: 1 0 auto;
+            max-width: calc(50% - 20px);
+            text-align: center;
+        }
+
+        .option-button:hover {
+            background-color: #444;
+            box-shadow: 0 0 6px #444, 0 0 30px #444, 0 0 60px #444, 0 0 240px #444;
+        }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .special-button {
+            margin: 10px;
+            padding: 12px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #555;
+            color: white;
+            border: 1px solid #777;
+            border-radius: 6px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            width: calc(50% - 20px);
+        }
+
+        .special-button:hover {
+            background-color: #666;
+            box-shadow: 0 0 6px #666, 0 0 30px #666, 0 0 60px #666, 0 0 240px #666;
+        }
+
+        .correct {
+            background-color: green;
+            color: white;
+        }
+
+        .incorrect {
+            background-color: red;
+            color: white;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border-radius: 12px;
+            color: white;
+            border: none;
+            z-index: 1001;
+        }
+
+        .final-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border-radius: 12px;
+            color: white;
+            border: none;
+            z-index: 1001;
+        }
+
+        .popup h2 {
+            margin: 0;
+        }
+
+        .popup .correct-title {
+            color: green;
+        }
+
+        .popup .incorrect-title {
+            color: red;
+        }
+
+        .header-btn:hover {
+            background-color: #444;
+            box-shadow: none;
+        }
+
+        #quiz-title {
+            color: white;
+            font-size: 28px;
+        }
+
+        .question-container h2 {
+            color: white;
+            font-size: 24px;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 1000;
+        }
+
+        #progress-bar {
+            width: 80%;
+            height: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex;
+        }
+
+        .progress-segment {
+            height: 100%;
+            flex: 1;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="location.href='main.html'" class="header-btn">EduQuestia</button>
+    <object type="image/svg+xml" data="background.svg" class="svg-background"></object>
+    <div id="progress-bar"></div>
+    <h1 id="quiz-title"></h1>
+    <div id="quiz-container"></div>
+    <div id="popup" class="popup">
+        <h2 id="result-title"></h2>
+        <p id="explanation-text"></p>
+    </div>
+    <div id="final-popup" class="final-popup">
+        <h2 id="final-result-title"></h2>
+        <p id="final-explanation-text"></p>
+    </div>
+    <div id="overlay"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileName = urlParams.get('file');
+            if (fileName) {
+                fetch('http://localhost:3000/quiz-info', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            fileName
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(quizData => {
+                        createQuiz(quizData);
+                    })
+                    .catch(error => console.error('Error fetching quiz data:', error));
+            } else {
+                alert('No quiz file specified.');
+            }
+        });
+
+        let currentQuestionIndex = 0;
+        let quizDataGlobal;
+        let correctAnswers = 0;
+
+        function createQuiz(quizData) {
+            quizDataGlobal = quizData;
+            const quizTitle = document.getElementById('quiz-title');
+            quizTitle.textContent = quizData.title;
+
+            const quizContainer = document.getElementById('quiz-container');
+            loadQuestion(quizData.questions[currentQuestionIndex], quizContainer);
+
+            const overlay = document.getElementById('overlay');
+            overlay.addEventListener('click', () => {
+                document.getElementById('popup').style.display = 'none';
+                document.getElementById('final-popup').style.display = 'none';
+                document.getElementById('overlay').style.display = 'none';
+            });
+
+            initializeProgressBar(quizData.questions.length);
+        }
+
+        function loadQuestion(questionData, container) {
+            container.innerHTML = '';
+
+            const questionContainer = document.createElement('div');
+            questionContainer.classList.add('question-container');
+
+            const questionTitle = document.createElement('h2');
+            questionTitle.textContent = questionData.question;
+            questionContainer.appendChild(questionTitle);
+
+            const optionsContainer = document.createElement('div');
+            optionsContainer.classList.add('options-container');
+
+            const options = Object.keys(questionData.options);
+            options.forEach((key, index) => {
+                const optionButton = document.createElement('button');
+                optionButton.classList.add('option-button');
+                optionButton.textContent = questionData.options[key];
+                optionButton.addEventListener('click', () => handleAnswer(optionButton, key, questionData));
+                optionsContainer.appendChild(optionButton);
+            });
+
+            questionContainer.appendChild(optionsContainer);
+            container.appendChild(questionContainer);
+        }
+
+        function handleAnswer(button, selectedOption, questionData) {
+            const resultTitle = document.getElementById('result-title');
+            const optionButtons = document.querySelectorAll('.option-button');
+            optionButtons.forEach(btn => btn.classList.add('disabled'));
+
+            let isCorrect = false;
+            if (selectedOption === questionData.answer) {
+                button.classList.add('correct');
+                resultTitle.textContent = 'CORECT!';
+                resultTitle.classList.add('correct-title');
+                resultTitle.classList.remove('incorrect-title');
+                correctAnswers++;
+                isCorrect = true;
+            } else {
+                button.classList.add('incorrect');
+                resultTitle.textContent = 'INCORECT!';
+                resultTitle.classList.add('incorrect-title');
+                resultTitle.classList.remove('correct-title');
+            }
+            updateProgressBar(isCorrect);
+            showExplanation(questionData.explanation);
+            addSpecialButtons();
+        }
+
+        function showExplanation(explanation) {
+            const popup = document.getElementById('popup');
+            const explanationText = document.getElementById('explanation-text');
+            explanationText.textContent = explanation;
+            popup.style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function addSpecialButtons() {
+            const explanationButton = document.createElement('button');
+            explanationButton.classList.add('special-button');
+            explanationButton.textContent = 'Explicatie';
+            explanationButton.addEventListener('click', () => {
+                showExplanation(quizDataGlobal.questions[currentQuestionIndex].explanation);
+            });
+
+            const nextQuestionButton = document.createElement('button');
+            nextQuestionButton.classList.add('special-button');
+            nextQuestionButton.textContent = 'Urmatoare Intrebare';
+            nextQuestionButton.addEventListener('click', () => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizDataGlobal.questions.length) {
+                    loadQuestion(quizDataGlobal.questions[currentQuestionIndex], document.getElementById('quiz-container'));
+                    document.getElementById('popup').style.display = 'none';
+                    document.getElementById('overlay').style.display = 'none';
+                } else {
+                    showFinalResults();
+                }
+            });
+
+            const buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('button-container');
+            buttonContainer.appendChild(explanationButton);
+            buttonContainer.appendChild(nextQuestionButton);
+            document.getElementById('quiz-container').appendChild(buttonContainer);
+        }
+
+        function initializeProgressBar(numQuestions) {
+            const progressBar = document.getElementById('progress-bar');
+            for (let i = 0; i < numQuestions; i++) {
+                const segment = document.createElement('div');
+                segment.classList.add('progress-segment');
+                progressBar.appendChild(segment);
+            }
+        }
+
+        function updateProgressBar(isCorrect) {
+            const progressBar = document.getElementById('progress-bar');
+            const segments = progressBar.children;
+            if (currentQuestionIndex < segments.length) {
+                segments[currentQuestionIndex].style.backgroundColor = isCorrect ? 'green' : 'red';
+            }
+        }
+
+        function showFinalResults() {
+            const popup = document.getElementById('final-popup');
+            const resultTitle = document.getElementById('final-result-title');
+            const explanationText = document.getElementById('final-explanation-text');
+            resultTitle.textContent = 'Test Terminat!';
+            explanationText.textContent = `Ai raspuns corect la ${correctAnswers} din ${quizDataGlobal.questions.length} intrebari.`;
+            popup.style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

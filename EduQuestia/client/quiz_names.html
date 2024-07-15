@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuestia | Quizzuri</title>
+    <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="logo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #0a0a3d;
+            position: relative;
+        }
+
+        .filter-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-container select,
+        .filter-container input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        #buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 90%;
+        }
+
+        button:not(.header-btn) {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            flex: 1 1 auto;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        button:not(.header-btn):hover {
+            background-color: #444;
+            box-shadow: 0 0 5px #444, 0 0 25px #444, 0 0 50px #444, 0 0 200px #444;
+        }
+        h1 {
+            font-size: 80px;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #4d4d4d 0%, white 10%, #4d4d4d 20%);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="location.href='main.html'" class="header-btn">EduQuestia</button>
+    <object type="image/svg+xml" data="background.svg" class="svg-background"></object>
+    <h1>Quizzuri</h1>
+    <div class="filter-container">
+        <select id="materie-filter" required>
+            <option value="">Materie</option>
+            <option value="Matematica">Matematica</option>
+            <option value="Limba Romana">Limba Română</option>
+            <option value="Istorie">Istorie</option>
+            <option value="Geografie">Geografie</option>
+            <option value="Biologie">Biologie</option>
+            <option value="Chimie">Chimie</option>
+            <option value="Fizica">Fizică</option>
+            <option value="Informatica">Informatică</option>
+            <option value="Limba Engleza">Limba Engleză</option>
+            <option value="Limba Franceza">Limba Franceză</option>
+            <option value="Desen">Desen</option>
+            <option value="Muzica">Muzică</option>
+            <option value="Religie">Religie</option>
+            <option value="Logica">Logică</option>
+        </select>
+        <select id="clasa-filter" required>
+            <option value="">Clasa</option>
+            <option value="I">I</option>
+            <option value="II">II</option>
+            <option value="III">III</option>
+            <option value="IV">IV</option>
+            <option value="V">V</option>
+            <option value="VI">VI</option>
+            <option value="VII">VII</option>
+            <option value="VIII">VIII</option>
+            <option value="IX">IX</option>
+            <option value="X">X</option>
+            <option value="XI">XI</option>
+            <option value="XII">XII</option>
+        </select>
+        <input type="text" id="search-input" placeholder="Caută...">
+    </div>
+    <div id="buttons-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('http://localhost:3000/quiz-names')
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('buttons-container');
+                    const materieFilter = document.getElementById('materie-filter');
+                    const clasaFilter = document.getElementById('clasa-filter');
+                    const searchInput = document.getElementById('search-input');
+
+                    const quizzes = data.quizFiles.map(file => {
+                        const [quizName, clasa, materie] = file.replace('.json', '').split(' ');
+                        return { file, quizName, clasa, materie };
+                    });
+
+                    const displayButtons = () => {
+                        container.innerHTML = '';
+                        const filteredQuizzes = quizzes.filter(quiz => {
+                            return (materieFilter.value === '' || quiz.materie === materieFilter.value) &&
+                                (clasaFilter.value === '' || quiz.clasa === clasaFilter.value) &&
+                                (quiz.quizName.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                                    quiz.materie.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+                                    quiz.clasa.toLowerCase().includes(searchInput.value.toLowerCase()));
+                        });
+
+                        filteredQuizzes.forEach(quiz => {
+                            const button = document.createElement('button');
+                            button.textContent = `${quiz.quizName} ${quiz.clasa} ${quiz.materie}`;
+                            button.addEventListener('click', () => {
+                                window.location.href = `quiz.html?file=${quiz.file}`;
+                            });
+                            container.appendChild(button);
+                        });
+                    };
+
+                    materieFilter.addEventListener('change', displayButtons);
+                    clasaFilter.addEventListener('change', displayButtons);
+                    searchInput.addEventListener('input', displayButtons);
+
+                    displayButtons();
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+    </script>
+</body>
+
+</html>

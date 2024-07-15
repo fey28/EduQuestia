@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuestia | Creator Lectii</title>
+    <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="logo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #0a0a3d;
+            position: relative;
+        }
+
+        #pdf-preview {
+            width: 90%;
+            height: 80%;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        #publish-btn,
+        #publish-popup-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #publish-btn:hover,
+        #publish-popup-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+            width: 300px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .popup input[type="text"],
+        .popup select {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .popup button:hover {
+            background-color: #0056b3;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        h1 {
+            font-size: 40px;
+            background: linear-gradient(to right, #4d4d4d 0%, white 10%, #4d4d4d 20%);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="location.href='main.html'" class="header-btn">EduQuestia</button>
+    <object type="image/svg+xml" data="background.svg" class="svg-background"></object>
+    <h1>Lectii Creator</h1>
+    <input type="file" id="pdf-upload" accept="application/pdf">
+    <iframe id="pdf-preview" src=""></iframe>
+    <button id="publish-btn">Publish</button>
+
+    <div id="overlay" class="overlay" onclick="closePublishPopup()"></div>
+    <div id="publish-popup" class="popup">
+        <button class="close-btn" onclick="closePublishPopup()">✖</button>
+        <h2>Publish Lesson</h2>
+        <input type="text" id="lesson-name" placeholder="Enter lesson name" required>
+        <select id="subject" required>
+            <option value="">Materie</option>
+            <option value="Matematica">Matematica</option>
+            <option value="Limba Romana">Limba Română</option>
+            <option value="Istorie">Istorie</option>
+            <option value="Geografie">Geografie</option>
+            <option value="Biologie">Biologie</option>
+            <option value="Chimie">Chimie</option>
+            <option value="Fizica">Fizică</option>
+            <option value="Informatica">Informatică</option>
+            <option value="Limba Engleza">Limba Engleză</option>
+            <option value="Limba Franceza">Limba Franceză</option>
+            <option value="Desen">Desen</option>
+            <option value="Muzica">Muzică</option>
+            <option value="Religie">Religie</option>
+            <option value="Logica">Logică</option>
+        </select>
+        <select id="class" required>
+            <option value="">Clasa</option>
+            <option value="I">I</option>
+            <option value="II">II</option>
+            <option value="III">III</option>
+            <option value="IV">IV</option>
+            <option value="V">V</option>
+            <option value="VI">VI</option>
+            <option value="VII">VII</option>
+            <option value="VIII">VIII</option>
+            <option value="IX">IX</option>
+            <option value="X">X</option>
+            <option value="XI">XI</option>
+            <option value="XII">XII</option>
+        </select>
+        <button type="button" id="publish-popup-btn">Publish</button>
+    </div>
+
+    <script>
+        let selectedFile = null;
+
+        document.getElementById('pdf-upload').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file && file.type === 'application/pdf') {
+                selectedFile = file;
+                const fileURL = URL.createObjectURL(file);
+                document.getElementById('pdf-preview').src = fileURL;
+            } else {
+                alert('Please upload a valid PDF file.');
+            }
+        });
+
+        document.getElementById('publish-btn').addEventListener('click', () => {
+            if (!selectedFile) {
+                alert('Please upload a PDF file before publishing.');
+                return;
+            }
+            openPublishPopup();
+        });
+
+        document.getElementById('publish-popup-btn').addEventListener('click', () => {
+            const lessonName = document.getElementById('lesson-name').value.trim();
+            const subject = document.getElementById('subject').value.trim();
+            const classValue = document.getElementById('class').value.trim();
+            if (!lessonName || !subject || !classValue) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            const title = `${lessonName} ${classValue} ${subject}`;
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('title', title);
+
+            fetch('http://localhost:3000/lesson-creator', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Lesson published successfully!');
+                        closePublishPopup();
+                    } else {
+                        alert(data.error || 'Failed to publish lesson.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function openPublishPopup() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('publish-popup').style.display = 'block';
+        }
+
+        function closePublishPopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('publish-popup').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuestia | Creator Quiz</title>
+    <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="logo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            width: 100vw;
+            background-color: #0a0a3d;
+            position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        h1 {
+            margin-bottom: 24px;
+            font-size: 28.8px;
+        }
+
+        .container,
+        .popup {
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 24px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            border: none;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 360px;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            margin-bottom: 12px;
+            padding: 12px;
+            font-size: 19.2px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+        }
+
+        textarea {
+            resize: none;
+            overflow: auto;
+            height: 36px;
+            padding-top: 24px;
+        }
+
+        .cuvinteCheie {
+            width: 306px;
+        }
+
+        button {
+            padding: 14.4px 30px;
+            margin: 12px;
+            font-size: 19.2px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            background-color: #444;
+            box-shadow: 0 0 6px #444, 0 0 30px #444, 0 0 60px #444, 0 0 240px #444;
+        }
+
+        .question {
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .answerOption {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .answerOption label {
+            margin-right: 6px;
+            width: 24px;
+        }
+
+        .removeBtn {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            margin-left: 12px;
+        }
+
+        .editable {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #output {
+            margin-top: 24px;
+            padding: 12px;
+            width: 360px;
+            word-wrap: break-word;
+            display: none;
+        }
+
+        .error {
+            color: red;
+            margin-top: 12px;
+        }
+
+        .separator {
+            border-top: 1px solid #ccc;
+            margin-top: 12px;
+            padding-top: 12px;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 36px;
+            box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            z-index: 1000;
+            display: none;
+            width: 480px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: none;
+        }
+
+
+        .popup input[type="text"],
+        .popup select {
+            width: 90%;
+            padding: 12px;
+            margin-bottom: 24px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+        }
+
+
+        .popup button {
+            padding: 18px 36px;
+            margin: 12px;
+            font-size: 24px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 6px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .popup button:hover {
+            background-color: #444;
+            box-shadow: 0 0 6px #444, 0 0 30px #444, 0 0 60px #444, 0 0 240px #444;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 6px 12px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .header-btn:hover {
+            background-color: #444;
+            box-shadow: none;
+        }
+        h1 {
+            font-size: 40px;
+            background: linear-gradient(to right, #4d4d4d 0%, white 10%, #4d4d4d 20%);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="location.href='main.html'" class="header-btn">EduQuestia</button>
+    <object type="image/svg+xml" data="background.svg" class="svg-background"></object>
+    <h1>Generează Quizzuri</h1>
+    <form id="promptForm" class="container">
+        <select id="subjectInput" required>
+            <option value="">Materie</option>
+            <option value="Matematica">Matematica</option>
+            <option value="Limba Romana">Limba Română</option>
+            <option value="Istorie">Istorie</option>
+            <option value="Geografie">Geografie</option>
+            <option value="Biologie">Biologie</option>
+            <option value="Chimie">Chimie</option>
+            <option value="Fizica">Fizică</option>
+            <option value="Informatica">Informatică</option>
+            <option value="Limba Engleza">Limba Engleză</option>
+            <option value="Limba Franceza">Limba Franceză</option>
+            <option value="Desen">Desen</option>
+            <option value="Muzica">Muzică</option>
+            <option value="Religie">Religie</option>
+            <option value="Logica">Logică</option>
+        </select>
+        <div id="questionsContainer"></div>
+        <button type="button" onclick="addQuestion()">Add Question</button>
+        <button type="submit">Generate</button>
+    </form>
+    <div id="output" class="container"></div>
+    <div id="error" class="error"></div>
+
+    <div id="overlay" class="overlay" onclick="closePublishPopup()"></div>
+    <div id="publishPopup" class="popup">
+        <button class="close-btn" onclick="closePublishPopup()">✖</button>
+        <h2>Publish Quiz</h2>
+        <input type="text" id="quizTitle" placeholder="Enter quiz title" required>
+        <select id="quizSubject" required>
+            <option value="">Materie</option>
+            <option value="Matematica">Matematica</option>
+            <option value="Limba Romana">Limba Română</option>
+            <option value="Istorie">Istorie</option>
+            <option value="Geografie">Geografie</option>
+            <option value="Biologie">Biologie</option>
+            <option value="Chimie">Chimie</option>
+            <option value="Fizica">Fizică</option>
+            <option value="Informatica">Informatică</option>
+            <option value="Limba Engleza">Limba Engleză</option>
+            <option value="Limba Franceza">Limba Franceză</option>
+            <option value="Desen">Desen</option>
+            <option value="Muzica">Muzică</option>
+            <option value="Religie">Religie</option>
+            <option value="Logica">Logică</option>
+        </select>
+        <select id="quizClass" required>
+            <option value="">Clasa</option>
+            <option value="I">I</option>
+            <option value="II">II</option>
+            <option value="III">III</option>
+            <option value="IV">IV</option>
+            <option value="V">V</option>
+            <option value="VI">VI</option>
+            <option value="VII">VII</option>
+            <option value="VIII">VIII</option>
+            <option value="IX">IX</option>
+            <option value="X">X</option>
+            <option value="XI">XI</option>
+            <option value="XII">XII</option>
+        </select>
+        <button type="button" onclick="publishQuiz()">Publish</button>
+    </div>
+
+    <script>
+        function addQuestion() {
+            const questionsContainer = document.getElementById('questionsContainer');
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+            questionDiv.innerHTML = `
+                <textarea class="questionInput cuvinteCheie" placeholder="Cuvinte cheie" required></textarea>
+                <select class="difficultyInput" required>
+                    <option value="">Selecteaza Dificultatea</option>
+                    <option value="easy">Usor</option>
+                    <option value="medium">Mediu</option>
+                    <option value="hard">Greu</option>
+                </select>
+                <select class="answersInput" required>
+                    ${Array.from({ length: 5 }, (_, i) => `<option value="${i + 2}">${i + 2}</option>`).join('')}
+                </select>
+                <button type="button" onclick="removeQuestion(this)">Delete Question</button>
+                <div class="separator"></div>
+            `;
+            questionsContainer.appendChild(questionDiv);
+            updateQuestionLabels();
+        }
+
+        function removeQuestion(button) {
+            button.parentElement.remove();
+            updateQuestionLabels();
+        }
+
+        function makeEditable(div, index) {
+            const questionContent = div.querySelector('.questionContent') ? div.querySelector('.questionContent').innerText : '';
+            const options = div.querySelectorAll('.option').length ? Array.from(div.querySelectorAll('.option')).map(option => option.innerText.replace(/^\d+\)\s*/, '')) : [];
+            const answer = div.querySelector('.answerContent') ? div.querySelector('.answerContent').innerText : '';
+            const explanation = div.querySelector('.explanationContent') ? div.querySelector('.explanationContent').innerText : '';
+
+            div.innerHTML = `
+                <label><strong>${index + 1}. Întrebare:</strong></label>
+                <textarea class="editQuestionText" required>${questionContent}</textarea>
+                <div class="answersContainer">
+                    ${options.length ? options.map((opt, optIndex) => `
+                        <div class="answerOption">
+                            <label>${optIndex + 1})</label>
+                            <textarea class="editOptionText" required>${opt}</textarea>
+                            <button type="button" class="removeBtn" onclick="removeAnswer(this)">✖</button>
+                        </div>
+                    `).join('') : `
+                        <div class="answerOption">
+                            <label>1)</label>
+                            <textarea class="editOptionText" placeholder="Answer" required></textarea>
+                            <button type="button" class="removeBtn" onclick="removeAnswer(this)">✖</button>
+                        </div>
+                        <div class="answerOption">
+                            <label>2)</label>
+                            <textarea class="editOptionText" placeholder="Answer" required></textarea>
+                            <button type="button" class="removeBtn" onclick="removeAnswer(this)">✖</button>
+                        </div>
+                    `}
+                </div>
+                <button type="button" onclick="addAnswer(this)">Add Answer</button>
+                <label><strong>Răspuns:</strong></label>
+                <select class="editAnswerText" required>
+                    ${Array.from({ length: options.length || 2 }, (_, i) => `<option value="${i + 1}" ${answer == i + 1 ? 'selected' : ''}>${i + 1}</option>`).join('')}
+                </select>
+                <label><strong>Explicație:</strong></label>
+                <textarea class="editExplanationText" required>${explanation}</textarea>
+                <button type="button" onclick="saveChanges(this, ${index})">Save</button>
+                <button type="button" onclick="removeQuestion(this)">Delete Question</button>
+                <div class="separator"></div>
+            `;
+            updateAnswerLabels(div.querySelector('.answersContainer'));
+        }
+
+
+        function addAnswer(button) {
+            const answersContainer = button.previousElementSibling;
+            const answerOptions = answersContainer.querySelectorAll('.answerOption');
+            if (answerOptions.length < 6) {
+                const newAnswer = document.createElement('div');
+                newAnswer.classList.add('answerOption');
+                newAnswer.innerHTML = `
+                    <label>${answerOptions.length + 1})</label>
+                    <textarea class="editOptionText" placeholder="Answer" required></textarea>
+                    <button type="button" class="removeBtn" onclick="removeAnswer(this)">✖</button>
+                `;
+                answersContainer.appendChild(newAnswer);
+                updateAnswerLabels(answersContainer);
+                updateAnswerDropdown(answersContainer.parentElement.querySelector('.editAnswerText'), answerOptions.length + 1);
+            } else {
+                alert("Maximum of 6 answers allowed.");
+            }
+        }
+
+        function removeAnswer(button) {
+            const answersContainer = button.parentElement.parentElement;
+            const answerOptions = answersContainer.querySelectorAll('.answerOption');
+            if (answerOptions.length > 2) {
+                button.parentElement.remove();
+                updateAnswerLabels(answersContainer);
+                updateAnswerDropdown(answersContainer.parentElement.querySelector('.editAnswerText'), answerOptions.length - 1);
+            } else {
+                alert("There must be at least 2 answers.");
+            }
+        }
+
+        function updateAnswerLabels(answersContainer) {
+            const answerOptions = answersContainer.querySelectorAll('.answerOption');
+            answerOptions.forEach((option, index) => {
+                option.querySelector('label').innerText = `${index + 1})`;
+            });
+        }
+
+        function updateAnswerDropdown(select, numOptions) {
+            const currentAnswer = select.value;
+            select.innerHTML = Array.from({
+                length: numOptions
+            }, (_, i) => `<option value="${i + 1}" ${currentAnswer == i + 1 ? 'selected' : ''}>${i + 1}</option>`).join('');
+        }
+
+        function saveChanges(button, index) {
+            const div = button.parentElement;
+            const questionContent = div.querySelector('.editQuestionText').value;
+            const options = Array.from(div.querySelectorAll('.editOptionText')).map(input => input.value);
+            const answer = div.querySelector('.editAnswerText').value;
+            const explanation = div.querySelector('.editExplanationText').value;
+
+            if (!questionContent || !answer || !explanation || options.some(option => !option)) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            div.innerHTML = `
+                <p><strong>${index + 1}. Întrebare:</strong> <span class="questionContent">${questionContent}</span></p>
+                ${options.map((opt, optIndex) => `<p class="option">${optIndex + 1}) ${opt}</p>`).join('')}
+                <p><strong>Răspuns:</strong> <span class="answerContent">${answer}</span></p>
+                <p><strong>Explicație:</strong> <span class="explanationContent">${explanation}</span></p>
+                <button type="button" onclick="makeEditable(this.parentElement, ${index})">Edit</button>
+                <button type="button" onclick="removeQuestion(this)">Delete Question</button>
+                <div class="separator"></div>
+            `;
+            updateQuestionLabels();
+            moveAddQuestionButton();
+        }
+
+        document.getElementById('promptForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const subject = document.getElementById('subjectInput').value;
+            const questions = Array.from(document.getElementsByClassName('question')).map(questionDiv => {
+                return {
+                    question: questionDiv.querySelector('.questionInput').value,
+                    difficulty: questionDiv.querySelector('.difficultyInput').value,
+                    number_answers: questionDiv.querySelector('.answersInput').value
+                };
+            });
+
+            if (questions.length === 0) {
+                alert("Please add at least one question.");
+                return;
+            }
+
+            for (const q of questions) {
+                if (!q.difficulty) {
+                    alert("Please select a difficulty for each question.");
+                    return;
+                }
+            }
+
+            const numQuestions = questions.length;
+            const prompt = {
+                subject: subject,
+                numQuestions: numQuestions,
+                questions: questions,
+            };
+
+            const output = document.getElementById('output');
+            const errorDiv = document.getElementById('error');
+            errorDiv.innerHTML = '';
+
+            try {
+                const response = await fetch('http://localhost:3000/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: JSON.stringify(prompt)
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Server communication failed');
+                }
+
+                const result = await response.json();
+                output.innerHTML = '';
+
+                try {
+                    const generatedData = JSON.parse(result.generatedText);
+                    const questions = generatedData.questions;
+
+                    questions.forEach((q, index) => {
+                        const questionDiv = document.createElement('div');
+                        questionDiv.classList.add('editable');
+                        questionDiv.innerHTML = `
+                    <p><strong>${index + 1}. Întrebare:</strong> <span class="questionContent">${q.question}</span></p>
+                    ${Object.keys(q.options).map(optionKey => `<p class="option">${optionKey}) ${q.options[optionKey]}</p>`).join('')}
+                    <p><strong>Răspuns:</strong> <span class="answerContent">${q.answer}</span></p>
+                    <p><strong>Explicație:</strong> <span class="explanationContent">${q.explanation || ''}</span></p>
+                    <button type="button" onclick="makeEditable(this.parentElement, ${index})">Edit</button>
+                    <button type="button" onclick="removeQuestion(this)">Delete Question</button>
+                    <div class="separator"></div>
+                `;
+                        output.appendChild(questionDiv);
+                    });
+
+                    output.style.display = 'block';
+
+                    if (!document.getElementById('addQuestionButton')) {
+                        const addQuestionButton = document.createElement('button');
+                        addQuestionButton.id = 'addQuestionButton';
+                        addQuestionButton.textContent = 'Add Question';
+                        addQuestionButton.type = 'button';
+                        addQuestionButton.onclick = () => {
+                            addQuestionToOutput(output);
+                        };
+                        output.appendChild(addQuestionButton);
+                    }
+
+                    if (!document.getElementById('publishQuizButton')) {
+                        const publishQuizButton = document.createElement('button');
+                        publishQuizButton.id = 'publishQuizButton';
+                        publishQuizButton.textContent = 'Publish Quiz';
+                        publishQuizButton.type = 'button';
+                        publishQuizButton.onclick = () => {
+                            openPublishPopup();
+                        };
+                        output.appendChild(publishQuizButton);
+                    }
+
+                    updateQuestionLabels();
+                    moveAddQuestionButton();
+                } catch (error) {
+                    output.innerText = "Failed to parse the response. Ensure the server returns a valid JSON.";
+                }
+            } catch (error) {
+                errorDiv.innerHTML = "Error communicating with the server. Please try again later.";
+            }
+        });
+
+
+        function addQuestionToOutput(output) {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('editable');
+            questionDiv.innerHTML = `
+                <label><strong>Întrebare:</strong></label>
+                <textarea class="editQuestionText" placeholder="Your question" required></textarea>
+                <div class="answersContainer">
+                    <div class="answerOption">
+                        <label>1)</label>
+                        <textarea class="editOptionText" placeholder="Answer" required></textarea>
+                        <button type="button" class="removeBtn" onclick="removeAnswer(this)">✖</button>
+                    </div>
+                    <div class="answerOption">
+                        <label>2)</label>
+                        <textarea class="editOptionText" placeholder="Answer" required></textarea>
+                        <button type="button" class="removeBtn" onclick="removeAnswer(this)">✖</button>
+                    </div>
+                </div>
+                <button type="button" onclick="addAnswer(this)">Add Answer</button>
+                <label><strong>Răspuns:</strong></label>
+                <select class="editAnswerText" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
+                <label><strong>Explicație:</strong></label>
+                <textarea class="editExplanationText" required placeholder="Add an explanation"></textarea>
+                <button type="button" onclick="saveNewQuestion(this)">Save</button>
+                <button type="button" onclick="removeQuestion(this)">Delete Question</button>
+                <div class="separator"></div>
+            `;
+            output.appendChild(questionDiv);
+            updateQuestionLabels();
+            moveAddQuestionButton();
+        }
+
+        function saveNewQuestion(button) {
+            const div = button.parentElement;
+            const questionContent = div.querySelector('.editQuestionText').value;
+            const options = Array.from(div.querySelectorAll('.editOptionText')).map(input => input.value);
+            const answer = div.querySelector('.editAnswerText').value;
+            const explanation = div.querySelector('.editExplanationText').value;
+
+            if (!questionContent || !answer || !explanation || options.some(option => !option)) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const index = document.querySelectorAll('#output .editable').length - 1;
+
+            div.innerHTML = `
+                <p><strong>${index + 1}. Întrebare:</strong> <span class="questionContent">${questionContent}</span></p>
+                ${options.map((opt, optIndex) => `<p class="option">${optIndex + 1}) ${opt}</p>`).join('')}
+                <p><strong>Răspuns:</strong> <span class="answerContent">${answer}</span></p>
+                <p><strong>Explicație:</strong> <span class="explanationContent">${explanation}</span></p>
+                <button type="button" onclick="makeEditable(this.parentElement, ${index})">Edit</button>
+                <button type="button" onclick="removeQuestion(this)">Delete Question</button>
+                <div class="separator"></div>
+            `;
+            updateQuestionLabels();
+            moveAddQuestionButton();
+        }
+
+        function updateQuestionLabels() {
+            const questionDivs = document.querySelectorAll('#output .editable');
+            questionDivs.forEach((questionDiv, index) => {
+                const questionLabel = questionDiv.querySelector('p strong');
+                if (questionLabel) {
+                    questionLabel.innerText = `${index + 1}. Întrebare:`;
+                }
+            });
+        }
+
+        function moveAddQuestionButton() {
+            const addQuestionButton = document.getElementById('addQuestionButton');
+            const publishQuizButton = document.getElementById('publishQuizButton');
+            if (addQuestionButton) {
+                addQuestionButton.remove();
+                const output = document.getElementById('output');
+                output.appendChild(addQuestionButton);
+                if (publishQuizButton) {
+                    publishQuizButton.remove();
+                    output.appendChild(publishQuizButton);
+                }
+            }
+        }
+
+        function openPublishPopup() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('publishPopup').style.display = 'block';
+        }
+
+        function closePublishPopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('publishPopup').style.display = 'none';
+        }
+
+        async function publishQuiz() {
+            const quizTitle = document.getElementById('quizTitle').value;
+            const quizSubject = document.getElementById('quizSubject').value;
+            const quizClass = document.getElementById('quizClass').value;
+            if (!quizTitle || !quizSubject || !quizClass) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            const username = localStorage.getItem('username');
+            if (!username) {
+                alert("You need to be logged in to publish a quiz.");
+                return;
+            }
+
+            const questions = Array.from(document.getElementsByClassName('editable')).map((questionDiv, index) => {
+                return {
+                    question: questionDiv.querySelector('.questionContent').innerText,
+                    options: Array.from(questionDiv.querySelectorAll('.option')).reduce((acc, option, idx) => {
+                        const optionText = option.innerText;
+                        const splitText = optionText.split(/\)\s(.+)/);
+                        acc[idx + 1] = splitText[1] || splitText[0];
+                        return acc;
+                    }, {}),
+                    answer: questionDiv.querySelector('.answerContent').innerText,
+                    explanation: questionDiv.querySelector('.explanationContent').innerText
+                };
+            });
+
+
+
+            const quizData = {
+                title: `${quizTitle} ${quizClass} ${quizSubject}`,
+                questions: questions,
+                username: username
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/quiz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(quizData)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Server communication failed');
+                }
+
+                alert(`Quiz titled "${quizTitle}" published!`);
+                closePublishPopup();
+            } catch (error) {
+                alert(`Failed to publish quiz. Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+
+</html>
