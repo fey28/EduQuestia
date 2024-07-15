@@ -42,3 +42,8 @@ Apoi in CMD scrie: node server.js
 ![image](https://github.com/user-attachments/assets/53dcbc7f-511a-4932-b68e-4f64b2520ce9)
 
 Asta este tot pentru server setup.
+
+Pentru a putea creea Quizzuri/Lectii va trebui sa modifici rank-ul userului in users.json, din "Elev" in "Profesor
+
+![image](https://github.com/user-attachments/assets/77781f04-bb05-41b7-a01e-33656ae43cd8)
+
