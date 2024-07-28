@@ -28,9 +28,11 @@ La ce sa ai grija:
 - ID-ul proiectului (poti face rost de el de pe https://console.cloud.google.com/)
 ![image](https://github.com/user-attachments/assets/6ae3a591-076d-4d3a-8be0-bfb7d5fdbbe9)
 
-Dupa ce termini de setat tot va trebui sa pui ID-ul proiectului in "server.js"
+Dupa ce termini de setat tot va trebui sa pui ID-ul proiectului in "server.js" si sa schimbi JWT_SECRET-ul
 
 ![image](https://github.com/user-attachments/assets/3ee555a7-f133-472d-90bb-db0482eaad52)
+
+![image](https://github.com/user-attachments/assets/ff169f60-58a1-4028-99d4-f5d701222bc7)
 
 Asa ar trebui sa arate folderul "EduQuestia"
 
