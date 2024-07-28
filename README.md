@@ -19,8 +19,6 @@ Activezi API-urile:
 Deschizi CMD-ul si accesezi path-ul folderului (de ex: C:\Users\Mihnea\Desktop\EduQuestia)
 
 Apoi scrie in CMD:
- - mkdir lectii
- - mkdir quizzes
  - npm install @google-cloud/vertexai@latest express cors multer
  - gcloud auth application-default login
 
