@@ -1,0 +1,39 @@
+{
+  "title": "Progresie Geometrica IX Matematica",
+  "questions": [
+    {
+      "question": "Care este al 4-lea termen al progresiei geometrice 2, 4, 8 ...?",
+      "options": {
+        "1": "10",
+        "2": "12",
+        "3": "16",
+        "4": "20"
+      },
+      "answer": "3",
+      "explanation": "Rația progresiei geometrice este 4/2 = 2. Al 4-lea termen este 8 * 2 = 16."
+    },
+    {
+      "question": "O progresie geometrică are primul termen 3 și rația 2. Care este al 5-lea termen al progresiei?",
+      "options": {
+        "1": "12",
+        "2": "24",
+        "3": "48",
+        "4": "96"
+      },
+      "answer": "3",
+      "explanation": "Al 5-lea termen al progresiei este 3 * 2 * 2 * 2 * 2 = 48."
+    },
+    {
+      "question": "Suma primilor 5 termeni ai progresiei geometrice 1, 3, 9 ... este?",
+      "options": {
+        "1": "121",
+        "2": "242",
+        "3": "363",
+        "4": "484"
+      },
+      "answer": "1",
+      "explanation": "Suma primilor n termeni ai unei progresii geometrice este S = a(1-r^n)/(1-r), unde a este primul termen, r este rația și n este numărul de termeni. În acest caz, S = 1(1-3^5)/(1-3) = 121."
+    }
+  ],
+  "username": "Profesor1"
+}

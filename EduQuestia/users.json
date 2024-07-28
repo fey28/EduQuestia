@@ -1,0 +1,81 @@
+{
+  "Profesor1": {
+    "password": "Profesor1",
+    "rank": "Profesor",
+    "quizzes": [
+      "Progresie Geometrica IX Matematica.json"
+    ],
+    "lessons": [
+      "Sistemul Nervos Al Omului VII Biologie"
+    ]
+  },
+  "Profesor2": {
+    "password": "Profesor2",
+    "rank": "Profesor",
+    "quizzes": [
+      "Clima VII Geografie.json"
+    ],
+    "lessons": [
+      "Primul Razboi Mondial VII Istorie"
+    ]
+  },
+  "Profesor3": {
+    "password": "Profesor3",
+    "rank": "Profesor",
+    "quizzes": [
+      "Sistemul Nervos VII Biologie.json"
+    ],
+    "lessons": [
+      "Progresii Geometrice IX Matematica",
+      "Elemente De Trigonometrie IX Matematica"
+    ]
+  },
+  "Profesor4": {
+    "password": "Profesor4",
+    "rank": "Profesor",
+    "quizzes": [
+      "Trigonometrie IX Matematica.json"
+    ],
+    "lessons": [
+      "Diferentieri Climatice Si Biogeografice VII Geografie"
+    ]
+  },
+  "Profesor5": {
+    "password": "Profesor5",
+    "rank": "Profesor",
+    "quizzes": [
+      "Primul Razboi Mondial VII Istorie.json"
+    ],
+    "lessons": []
+  },
+  "Elev1": {
+    "password": "Elev1",
+    "rank": "Elev",
+    "quizzes": [],
+    "lessons": []
+  },
+  "Elev2": {
+    "password": "Elev2",
+    "rank": "Elev",
+    "quizzes": [],
+    "lessons": []
+  },
+  "Elev3": {
+    "password": "Elev3",
+    "rank": "Elev",
+    "quizzes": [],
+    "lessons": []
+  },
+  "Elev4": {
+    "password": "Elev4",
+    "rank": "Elev",
+    "quizzes": [],
+    "lessons": []
+  },
+  "Elev5": {
+    "password": "Elev5",
+    "rank": "Elev",
+    "quizzes": [],
+    "lessons": []
+  }
+}

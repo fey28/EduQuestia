@@ -1,0 +1,39 @@
+{
+  "title": "Sistemul Nervos VII Biologie",
+  "questions": [
+    {
+      "question": "Care dintre următoarele este o componentă a sistemului nervos central?",
+      "options": {
+        "1": "Măduva spinării",
+        "2": "Nervii periferici",
+        "3": "Ganglionii",
+        "4": "Toate cele de mai sus"
+      },
+      "answer": "1",
+      "explanation": "Sistemul nervos central este format din creier și măduva spinării."
+    },
+    {
+      "question": "Care dintre următoarele este un tip de neuron?",
+      "options": {
+        "1": "Neuronul motor",
+        "2": "Neuronul senzorial",
+        "3": "Neuronul intermediar",
+        "4": "Toate cele de mai sus"
+      },
+      "answer": "4",
+      "explanation": "Există trei tipuri principale de neuroni: neuronii motori, neuronii senzoriali și neuronii intermediari."
+    },
+    {
+      "question": "Ce rol are mielina în sistemul nervos?",
+      "options": {
+        "1": "Protejează axonul neuronului",
+        "2": "Ajută la conducerea rapidă a impulsurilor nervoase",
+        "3": "Ajută la formarea sinapselor",
+        "4": "1 și 2"
+      },
+      "answer": "4",
+      "explanation": "Mielina este o substanță grasă care înconjoară axonul neuronului, protejând axonul și accelerând conducerea impulsurilor nervoase."
+    }
+  ],
+  "username": "Profesor3"
+}

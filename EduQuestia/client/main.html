@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuestia | Acasă</title>
+    <link rel="stylesheet" href="background.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #0a0a3d;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-button {
+            padding: 17px 34px;
+            margin: 12.75px;
+            font-size: 20.4px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .main-button:hover {
+            background-color: #444;
+            box-shadow: 0 0 5px #444, 0 0 25px #444, 0 0 50px #444, 0 0 200px #444;
+        }
+
+        button {
+            padding: 17px 34px;
+            margin: 12.75px;
+            font-size: 20.4px;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #444;
+            box-shadow: 0 0 5px #444, 0 0 25px #444, 0 0 50px #444, 0 0 200px #444;
+        }
+
+        .top-right {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+
+        .user-info {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 20px;
+            color: white;
+        }
+
+        .user-info strong {
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 96px;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, #4d4d4d 0%, white 10%, #4d4d4d 20%);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <object type="image/svg+xml" data="background.svg" class="svg-background"></object>
+    <div class="top-right">
+        <span id="user-info" class="user-info"></span>
+        <button id="login-btn" class="main-button" onclick="window.location.href='login.html'">Login</button>
+        <button id="signup-btn" class="main-button" onclick="window.location.href='signup.html'">Sign Up</button>
+        <button id="signout-btn" class="main-button" onclick="signOut()" style="display: none;">Sign Out</button>
+    </div>
+    <div class="container">
+        <h1>EduQuestia</h1>
+        <button id="creaza-btn" class="main-button">Crează Quizzuri</button>
+        <button id="creaza-lectii-btn" class="main-button">Crează Lecții</button>
+        <button onclick="window.location.href='quiz_names.html'" class="main-button">Quizzuri</button>
+        <button onclick="window.location.href='lectii_names.html'" class="main-button">Lecții</button>
+        <button id="despre-btn" class="main-button" onclick="window.location.href='about.html'">Despre</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            const rank = localStorage.getItem('rank');
+
+            if (username && rank) {
+                document.getElementById('user-info').innerHTML = `<strong>${username}</strong>, <strong>${rank}</strong>`;
+                document.getElementById('login-btn').style.display = 'none';
+                document.getElementById('signup-btn').style.display = 'none';
+                document.getElementById('signout-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('login-btn').style.display = 'inline-block';
+                document.getElementById('signup-btn').style.display = 'inline-block';
+                document.getElementById('signout-btn').style.display = 'none';
+            }
+
+            document.getElementById('creaza-btn').addEventListener('click', () => {
+                const rank = localStorage.getItem('rank');
+                if (rank === 'Profesor') {
+                    window.location.href = 'quiz_creator.html';
+                } else {
+                    alert('Trebuie să fii "Profesor" pentru a putea crea quizzuri');
+                }
+            });
+
+            document.getElementById('creaza-lectii-btn').addEventListener('click', () => {
+                const rank = localStorage.getItem('rank');
+                if (rank === 'Profesor') {
+                    window.location.href = 'lectii_creator.html';
+                } else {
+                    alert('Trebuie să fii "Profesor" pentru a putea crea lecții.');
+                }
+            });
+        });
+
+        function signOut() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('rank');
+            localStorage.removeItem('quizzes');
+            window.location.href = 'main.html';
+        }
+    </script>
+</body>
+</html>

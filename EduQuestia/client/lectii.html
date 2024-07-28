@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduQuestia | Lectie</title>
+    <link rel="stylesheet" href="background.css">
+    <link rel="stylesheet" href="logo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #0a0a3d;
+            position: relative;
+        }
+        iframe {
+            width: 80%;
+            height: 80%;
+            border: 1px solid #ccc;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #4d4d4d 0%, white 10%, #4d4d4d 20%);
+            background-size: 200% auto;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            animation: shine 3s infinite linear;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button onclick="location.href='main.html'" class="header-btn">EduQuestia</button>
+    <object type="image/svg+xml" data="background.svg" class="svg-background"></object>
+    <h1>Lecția</h1>
+    <iframe id="lesson-frame" src=""></iframe>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileName = urlParams.get('file');
+
+            if (!fileName) {
+                alert('No lesson file specified.');
+                return;
+            }
+
+            fetch('http://localhost:3000/lesson-info', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ fileName: fileName })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = URL.createObjectURL(blob);
+                document.getElementById('lesson-frame').src = url;
+            })
+            .catch(error => console.error('Error fetching lesson:', error));
+        });
+    </script>
+</body>
+</html>

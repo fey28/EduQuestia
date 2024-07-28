@@ -1,0 +1,39 @@
+{
+  "title": "Clima VII Geografie",
+  "questions": [
+    {
+      "question": "Care dintre următoarele este un factor care influențează clima?",
+      "options": {
+        "1": "Altitudinea",
+        "2": "Lățimea geografică",
+        "3": "Curenții oceanici",
+        "4": "Toate cele de mai sus"
+      },
+      "answer": "4",
+      "explanation": "Toate cele trei elemente - altitudinea, lățimea geografică și curenții oceanici - influențează clima."
+    },
+    {
+      "question": "Ce tip de climă se caracterizează prin veri calde și umede și ierni reci și uscate?",
+      "options": {
+        "1": "Clima mediteraneană",
+        "2": "Clima tropicală",
+        "3": "Clima temperată",
+        "4": "Clima polară"
+      },
+      "answer": "1",
+      "explanation": "Clima mediteraneană are veri calde și umede și ierni reci și uscate."
+    },
+    {
+      "question": "Ce tip de climă se găsește în zonele de lângă ecuator?",
+      "options": {
+        "1": "Clima temperată",
+        "2": "Clima tropicală",
+        "3": "Clima mediteraneană",
+        "4": "Clima polară"
+      },
+      "answer": "2",
+      "explanation": "Clima tropicală se găsește în zonele de lângă ecuator, caracterizată prin temperaturi ridicate și precipitații abundente pe tot parcursul anului."
+    }
+  ],
+  "username": "Profesor2"
+}

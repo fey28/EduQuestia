@@ -1,0 +1,39 @@
+{
+  "title": "Primul Razboi Mondial VII Istorie",
+  "questions": [
+    {
+      "question": "Care dintre următoarele este un factor principal care a declanșat Primul Război Mondial?",
+      "options": {
+        "1": "Asasinarea arhiducelui Franz Ferdinand",
+        "2": "Criza financiară din 1907",
+        "3": "Rivalitatea economică între puterile europene",
+        "4": "Toate cele de mai sus"
+      },
+      "answer": "4",
+      "explanation": "Toate opțiunile enumerate au contribuit la declanșarea Primului Război Mondial. Asasinarea arhiducelui Franz Ferdinand a fost un detonator imediat, dar rivalitatea economică, militară și politică dintre puterile europene a creat un climat de tensiune care a favorizat conflictul."
+    },
+    {
+      "question": "Care dintre următoarele țări nu a făcut parte din Puterile Centrale în Primul Război Mondial?",
+      "options": {
+        "1": "Germania",
+        "2": "Austria-Ungaria",
+        "3": "Rusia",
+        "4": "Imperiul Otoman"
+      },
+      "answer": "3",
+      "explanation": "Rusia a fost parte a Puterilor Antantei. Germania, Austria-Ungaria și Imperiul Otoman au format Puterile Centrale."
+    },
+    {
+      "question": "Care dintre următoarele bătălii este considerată o victorie decisivă pentru Puterile Antantei în Primul Război Mondial?",
+      "options": {
+        "1": "Bătălia de la Marne",
+        "2": "Bătălia de la Verdun",
+        "3": "Bătălia de la Somme",
+        "4": "Bătălia de la Passchendaele"
+      },
+      "answer": "1",
+      "explanation": "Bătălia de la Marne a fost o victorie importantă pentru Puterile Antantei, oprind avansul german spre Paris și stabilind un front stabil în Franța. Deși bătăliile de la Verdun, Somme și Passchendaele au fost extrem de sângeroase, ele nu au fost decisive pentru câștigarea războiului."
+    }
+  ],
+  "username": "Profesor5"
+}
