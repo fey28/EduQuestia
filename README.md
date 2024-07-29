@@ -19,7 +19,7 @@ Activezi API-urile:
 Deschizi CMD-ul si accesezi path-ul folderului (de ex: C:\Users\Mihnea\Desktop\EduQuestia)
 
 Apoi scrie in CMD:
- - npm install @google-cloud/vertexai@latest express cors multer
+ - npm install express cors multer @google-cloud/vertexai fs path jsonwebtoken
  - gcloud auth application-default login
 
 Te loghezi cu contul de Google pe care ai si contul de Google Cloud
