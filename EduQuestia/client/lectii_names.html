@@ -145,8 +145,8 @@
                     const lessons = data.lessonFiles.map(file => {
                         const parts = file.replace('.pdf', '').split(' ');
                         const lessonName = parts.slice(0, -2).join(' ');
-                        const clasa = parts[parts.length - 2];
-                        const materie = "Clasa " + parts[parts.length - 1];
+                        const clasa = "Clasa " + parts[parts.length - 2];
+                        const materie = parts[parts.length - 1];
                         return { file, lessonName, clasa, materie };
                     });
 
@@ -154,7 +154,7 @@
                         container.innerHTML = '';
                         const filteredLessons = lessons.filter(lesson => {
                             return (materieFilter.value === '' || lesson.materie === materieFilter.value) &&
-                                (clasaFilter.value === '' || lesson.clasa === clasaFilter.value) &&
+                                (clasaFilter.value === '' || lesson.clasa === "Clasa " + clasaFilter.value) &&
                                 (lesson.lessonName.toLowerCase().includes(searchInput.value.toLowerCase()) ||
                                     lesson.materie.toLowerCase().includes(searchInput.value.toLowerCase()) ||
                                     lesson.clasa.toLowerCase().includes(searchInput.value.toLowerCase()));
