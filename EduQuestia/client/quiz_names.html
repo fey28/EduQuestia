@@ -157,7 +157,7 @@
                         const searchValue = searchInput.value.trim().toLowerCase();
                         const filteredQuizzes = quizzes.filter(quiz => {
                             return (materieFilter.value === '' || quiz.materie === materieFilter.value) &&
-                                (clasaFilter.value === '' || quiz.clasa === clasaFilter.value) &&
+                                (clasaFilter.value === '' || quiz.clasa === "Clasa " + clasaFilter.value) &&
                                 (quiz.quizName.toLowerCase().includes(searchValue) ||
                                     quiz.materie.toLowerCase().includes(searchValue) ||
                                     quiz.clasa.toLowerCase().includes(searchValue));
